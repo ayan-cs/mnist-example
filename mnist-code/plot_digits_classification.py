@@ -9,8 +9,8 @@ n_samples = len(digits.images)
 print("Image size",digits.images[0].shape)
 data = digits.images.reshape((n_samples, -1))
 
-print("Image Size\tTrain:Test\tAccuracy")
-split=[0.1, 0.2, 0.3]
+print("ImgSize\tTrain:Test\tAccuracy")
+split=[0.1, 0.2, 0.3, 0.4]
 for size in split :
   clf = svm.SVC(gamma=0.001)
   X_train, X_test, y_train, y_test = train_test_split(data, digits.target, test_size=size, shuffle=False)
