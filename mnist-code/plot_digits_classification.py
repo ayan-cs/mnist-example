@@ -8,6 +8,7 @@ digits = datasets.load_digits()
 n_samples = len(digits.images)
 print("Image size",digits.images[0].shape)
 data = digits.images.reshape((n_samples, -1))
+print(data.shape)
 
 print("ImgSize\tTrain:Test\tAccuracy")
 split=[0.1, 0.2, 0.3, 0.4]
