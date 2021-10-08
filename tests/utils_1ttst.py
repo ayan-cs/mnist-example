@@ -16,7 +16,7 @@ def test_save_model():
 def test_small_data_overfit():
     iris = load_iris()
     random_indice = np.random.permutation(len(iris.data))
-    X = iris.data[random_indice[:10]]
-    y = iris.target[random_indice[:10]]
+    X = iris.data[random_indice[:50]]
+    y = iris.target[random_indice[:50]]
     acc = run_classification_experiment(X, y, X, y, .001, 1)
     assert acc > 0.99

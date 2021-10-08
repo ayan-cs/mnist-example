@@ -16,8 +16,9 @@ def resize_data(data, rescale_factor):
     return resized_images
 
 def create_split(data, target, train_size, val_size):
+    test_size = 1 - (train_size + val_size)
     X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=(1-train_size), shuffle=False)
-    X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=val_size, shuffle=False)
+    X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=val_size/(val_size + test_size), shuffle=False)
     return (X_train, y_train, X_val, y_val, X_test, y_test)
 
 def get_acc(model,X,Y):
