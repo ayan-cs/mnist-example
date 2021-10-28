@@ -1,5 +1,3 @@
-# Best model finding, modularizing functionalities
-
 import matplotlib.pyplot as plt
 import numpy as np
 import math
@@ -36,7 +34,8 @@ if os.path.exists(model_path)==False:
 
 candidate_svm = []
 candidate_desctree = []
-#best_model={}
+accuracy_desctree = []
+accuracy_svm = []
 best_valacc = 0
 print("Splitidx\tSVM_G\tDT_D\n")
 for s in range(5):
@@ -53,6 +52,7 @@ for s in range(5):
             }
             candidate_svm.append(candidate)
     best_svm = findBestModel(candidate_svm)
+    accuracy_svm.append(best_svm['accuracy'])
     for d in depth :
         metrics_valid = runClassificationExample2(X_train, y_train, X_val, y_val, model_path, 'desctree', d)
         if metrics_valid :
@@ -65,18 +65,8 @@ for s in range(5):
             }
             candidate_desctree.append(candidate)
     best_desctree = findBestModel(candidate_desctree)
+    accuracy_desctree.append(best_desctree['accuracy'])
     print(f"Split__{s}\t{best_svm['gamma']}\t{best_desctree['depth']}")
 
-"""
-best_model_memory = candidate_model[0]['model']
-best_model_accuracy = candidate_model[0]['accuracy']
-g = candidate_model[0]['gamma']
-for i in candidate_model :
-    if i['accuracy'] > best_model_accuracy :
-        best_model_accuracy = i['accuracy']
-        best_model_memory = i['model']
-        g = i['gamma']
-
-y_pred = best_model_memory.predict(X_test)
-print(f"Accuracy score from best model in candidate list {best_model_memory} with gamma={g} : ", accuracy_score(y_test, y_pred)*100)
-"""
+print("------------------------------------")
+print(f"Avg+-SD\t{sum(accuracy_svm)/5 : .2f}+-{np.std(accuracy_svm) : .2f}\t{sum(accuracy_desctree)/5 : .2f}+-{np.std(accuracy_desctree) : .2f}")

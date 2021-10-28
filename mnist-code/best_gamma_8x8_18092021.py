@@ -6,11 +6,12 @@ import math
 import os
 
 from sklearn import datasets, svm, metrics
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from skimage.transform import resize
 import pickle
-from utils import resize_data, create_split, get_acc
+from utils import *
 
 digit = datasets.load_digits()
 n_samples = len(digit.images)
@@ -32,51 +33,32 @@ model_path="./models"
 if os.path.exists(model_path)==False:
     os.mkdir(model_path)
 
-best_model={}
+candidate_model=[]
+#best_model={}
+best_valacc = 0
 for g in gamma :
     #print(f"\n=== Gamma = {g} ===\n")#
     #print("ImgSize\tTrn:Tst\tValAcc")#
     for size in split :
-        clf = svm.SVC(gamma=g)
+        #clf = svm.SVC(gamma=g)
         X_train, y_train, X_val, y_val, X_test, y_test = create_split(data, target, size, (1-size)/2)
-        clf.fit(X_train, y_train)
-        y_val_pred = clf.predict(X_val)
-        y_pred = clf.predict(X_test)#
-        shape0 = int(math.sqrt(data[0].shape[0]))#
-        shape1 = int(math.sqrt(data[0].shape[0]))#
-        train = int((1-size)*100)#
-        test = int(size*100)#
-        valacc = get_acc(model = clf, X = X_val, Y = y_val )
-        if valacc < 0.6:
-            print(f"Skipping model for gamma={g} valacc={valacc}")
-            continue
-        if valacc>best_valacc:
-            best_valacc=valacc
-            best_model['gamma']=g
-            best_model['clf']=clf
-            best_model['testsplit']=size
-            best_model['Validation Acc']=valacc
-        name=f'./model-{size*10}-{g}-{valacc:.4f}.sav'
-        pickle.dump(clf, open(os.path.join(model_path, name), 'wb'))
-        testacc = get_acc(model = clf, X = X_test, Y = y_test )*100#
-        #print(f"{shape0}*{shape1}\t{train}:{test}\t{valacc:.2f}\t{testacc:.2f}")#
-    print()
-
-print("Best model from memory : \n",best_model)
-
-"""
-best_gamma = max(gamma[0])
-for g in range(len(gamma)-1):
-    if max(model[g])>best_gamma:
-        best_gamma = g
-print("Best gamma : ",best_gamma)
-"""
-
-"""
-print("Best model : ",best_model)
-y_pred = best_model['clf'].predict(X_test)
-print("Best model's Test acc : ",accuracy_score(y_test, y_pred)*100)
-"""
+        metrics_valid = runClassificationExample1(X_train, y_train, X_val, y_val, g, model_path, size)
+        """if metrics_valid["accuracy"]>best_valacc:
+        best_valacc=valacc
+        best_model['gamma']=g
+        best_model['clf']=clf
+        best_model['testsplit']=size
+        best_model['Validation Acc']=valacc"""
+        if metrics_valid :
+            candidate = {
+                "model" : metrics_valid["model"],
+                "accuracy" : metrics_valid["accuracy"],
+                "f1 score" : metrics_valid["f1 score"],
+                "gamma" : g,
+                "test split" : split
+            }
+            candidate_model.append(candidate)
+            #print(candidate)
 
 import glob
 all_models=glob.glob('./models/*.sav')
@@ -89,7 +71,18 @@ for name in all_models:
         best_model=name
 
 print("Best model from hard drive :\n",best_model)
-
 model = pickle.load(open(best_model, 'rb'))
 y_pred = model.predict(X_test)
 print(f"Accuracy score from loaded model {best_model} : ", accuracy_score(y_test, y_pred)*100)
+
+best_model_memory = candidate_model[0]['model']
+best_model_accuracy = candidate_model[0]['accuracy']
+g = candidate_model[0]['gamma']
+for i in candidate_model :
+    if i['accuracy'] > best_model_accuracy :
+        best_model_accuracy = i['accuracy']
+        best_model_memory = i['model']
+        g = i['gamma']
+
+y_pred = best_model_memory.predict(X_test)
+print(f"Accuracy score from best model in candidate list {best_model_memory} with gamma={g} : ", accuracy_score(y_test, y_pred)*100)

@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn import datasets, svm, metrics
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
 
 digits = datasets.load_digits()
 n_samples = len(digits.images)
