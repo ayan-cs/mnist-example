@@ -36,7 +36,8 @@ candidate_svm = []
 candidate_desctree = []
 accuracy_desctree = []
 accuracy_svm = []
-best_valacc = 0
+best_model = []
+
 print("Splitidx\tSVM_G\tDT_D\n")
 for s in range(5):
     X_train, y_train, X_val, y_val, X_test, y_test = create_split(data, target, split, (1-split)/2)
@@ -51,8 +52,8 @@ for s in range(5):
                 "test split" : split
             }
             candidate_svm.append(candidate)
-    best_svm = findBestModel(candidate_svm)
-    accuracy_svm.append(best_svm['accuracy'])
+    best_model.append(findBestModel(candidate_svm))
+    accuracy_svm.append(best_model[-1]['accuracy'])
     for d in depth :
         metrics_valid = runClassificationExample2(X_train, y_train, X_val, y_val, model_path, 'desctree', d)
         if metrics_valid :
@@ -64,9 +65,17 @@ for s in range(5):
                 "test split" : split
             }
             candidate_desctree.append(candidate)
-    best_desctree = findBestModel(candidate_desctree)
-    accuracy_desctree.append(best_desctree['accuracy'])
-    print(f"Split__{s}\t{best_svm['gamma']}\t{best_desctree['depth']}")
+    best_model.append(findBestModel(candidate_desctree))
+    accuracy_desctree.append(best_model[-1]['accuracy'])
+    print(f"Split__{s}\t{best_model[-2]['gamma']}\t{best_model[-1]['depth']}")
+
+best_m = None
+best_valacc = 0
+for model in best_model :
+    if model['accuracy'] > best_valacc :
+        best_m = model
+        best_valacc = model['accuracy']
 
 print("------------------------------------")
 print(f"Avg+-SD\t{sum(accuracy_svm)/5 : .2f}+-{np.std(accuracy_svm) : .2f}\t{sum(accuracy_desctree)/5 : .2f}+-{np.std(accuracy_desctree) : .2f}")
+print(f"In my opinion, the best model is {best_m['model']} with Validation accuracy={best_m['accuracy']}")
