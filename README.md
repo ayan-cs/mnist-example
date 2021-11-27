@@ -1,5 +1,7 @@
 # Final Exam
 
+The best hyperparameter is 0.1 because it gets best generalization capability. For higher values of hyperparameter, it overfits training data and for lower values, it underfits the same.
+
 Dockerfile
 
 ```
