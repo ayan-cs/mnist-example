@@ -1,135 +1,53 @@
-# mnist-example
+# Training SVC on various Train split
 
-Quiz-1 Observations
-```
-Image size (8, 8)
-ImgSize	Train:Test	Accuracy
-(8, 8) 	 90 : 10 	 0.9611111111111111
-(8, 8) 	 80 : 20 	 0.9583333333333334
-(8, 8) 	 70 : 30 	 0.9703703703703703
-(8, 8) 	 60 : 40 	 0.9652294853963839
-```
+Training : Validation : Test = 80 : 10 : 10
 
-From the above table, it can be concluded that the optimal Train-Test split of a dataset is 70:30 i.e. 70% train data and 30% test data.
+## Training Data Vs. Validation Metrics Vs. Hyperparameter Vs. Test Metrics Chart
 
-### Observations with different gamma values
-Intuitively, the gamma parameter defines how far the influence of a single training example reaches, with low values meaning ‘far’ and high values meaning ‘close’.
-```
-=== Gamma = 0.1 ===
+![Output](https://drive.google.com/file/d/1UyGyGYFZx5BFO45LAzi5MzCq8Ik8pSeJ/view?usp=sharing)
 
-ImgSize	Trn:Tst	ValAcc	TstAcc
-4*4	90:10	13.33	6.67
-4*4	80:20	8.89	13.33
-4*4	70:30	10.37	11.48
-4*4	60:40	9.75	9.72
+## Confusion Matrix
 
-8*8	90:10	11.11	10.00
-8*8	80:20	11.11	10.56
-8*8	70:30	9.63	10.00
-8*8	60:40	10.31	9.44
+Using 10% Training Data
 
-16*16	90:10	11.11	8.89
-16*16	80:20	8.89	10.00
-16*16	70:30	9.63	10.00
-16*16	60:40	10.31	9.44
+![Using 10% Training Data](https://drive.google.com/file/d/1ivWGW17H-zTf6mD3Y5qwMv71oxa2vCl_/view?usp=sharing)
 
-32*32	90:10	11.11	8.89
-32*32	80:20	10.00	10.56
-32*32	70:30	9.63	10.00
-32*32	60:40	10.31	9.44
+Using 20% Training Data
 
-64*64	90:10	11.11	8.89
-64*64	80:20	10.00	10.56
-64*64	70:30	9.63	10.00
-64*64	60:40	10.31	9.44
+![Using 20% Training Data](https://drive.google.com/file/d/1NQ869bUfztk__1aOo77WGKwBlCwLvi_n/view?usp=sharing)
 
+Using 30% Training Data
 
+![Using 30% Training Data](https://drive.google.com/file/d/1vB0e8lomUevOWWpC_Mq6ChSocps08VVR/view?usp=sharing)
 
-=== Gamma = 0.01 ===
+Using 40% Training Data
 
-ImgSize	Trn:Tst	ValAcc	TstAcc
-4*4	90:10	11.11	7.78
-4*4	80:20	9.44	8.89
-4*4	70:30	11.48	7.78
-4*4	60:40	9.47	9.72
+![Using 40% Training Data](https://drive.google.com/file/d/1FkkyhAriiSjbVVb4j9ySsd8_sA2G9ztx/view?usp=sharing)
 
-8*8	90:10	66.67	71.11
-8*8	80:20	67.22	75.56
-8*8	70:30	63.70	75.56
-8*8	60:40	68.80	71.39
+Using 50% Training Data
 
-16*16	90:10	11.11	8.89
-16*16	80:20	10.00	10.56
-16*16	70:30	9.63	10.00
-16*16	60:40	10.31	9.44
+![Using 50% Training Data](https://drive.google.com/file/d/1b6qIQAH9jFV-a0Qr82lUk5KbA6j3M2NZ/view?usp=sharing)
 
-32*32	90:10	11.11	8.89
-32*32	80:20	10.56	10.56
-32*32	70:30	9.63	10.00
-32*32	60:40	10.31	9.44
+Using 60% Training Data
 
-64*64	90:10	11.11	8.89
-64*64	80:20	10.00	9.44
-64*64	70:30	9.63	10.00
-64*64	60:40	10.31	9.44
+![Using 60% Training Data](https://drive.google.com/file/d/1De4BuznrtvMOVdU8ns9DRCDpAopB7JOF/view?usp=sharing)
 
+Using 70% Training Data
 
+![Using 70% Training Data](https://drive.google.com/file/d/1pM6rTXYE88FpzHWMTTKjMCGKIeGhZyjN/view?usp=sharing)
 
-=== Gamma = 0.001 ===
+Using 80% Training Data
 
-ImgSize	Trn:Tst	ValAcc	TstAcc
-4*4	90:10	10.00	14.44
-4*4	80:20	10.56	6.67
-4*4	70:30	9.63	8.89
-4*4	60:40	10.31	10.28
+![Using 80% Training Data](https://drive.google.com/file/d/1PHS-WFzzdplD9wP3HQyO0DvWZFSbWYsB/view?usp=sharing)
 
-8*8	90:10	96.67	95.56
-8*8	80:20	95.00	96.67
-8*8	70:30	94.81	99.26
-8*8	60:40	94.71	98.33
+Using 90% Training Data
 
-16*16	90:10	11.11	8.89
-16*16	80:20	6.67	13.33
-16*16	70:30	9.63	14.81
-16*16	60:40	9.47	16.94
+![Using 90% Training Data](https://drive.google.com/file/d/1ahn2gsIGwFOiTDGZagLI0X8ZCLAcIMnE/view?usp=sharing)
 
-32*32	90:10	11.11	8.89
-32*32	80:20	9.44	11.11
-32*32	70:30	9.63	10.00
-32*32	60:40	10.31	9.44
+Using 100% Training Data
 
-64*64	90:10	11.11	8.89
-64*64	80:20	10.56	9.44
-64*64	70:30	9.63	10.00
-64*64	60:40	10.31	9.44
+![Using 100% Training Data](https://drive.google.com/file/d/1593E4JSEXs3ndqWQFbKDxM40odCw8y6K/view?usp=sharing)
 
+## Training Data vs Test F1 Score
 
-
-=== Gamma = 0.0001 ===
-
-ImgSize	Trn:Tst	ValAcc	TstAcc
-4*4	90:10	11.11	10.00
-4*4	80:20	10.56	11.11
-4*4	70:30	11.48	8.89
-4*4	60:40	11.42	7.22
-
-8*8	90:10	93.33	92.22
-8*8	80:20	92.78	91.67
-8*8	70:30	90.00	95.56
-8*8	60:40	89.97	96.94
-
-16*16	90:10	12.22	7.78
-16*16	80:20	10.56	11.67
-16*16	70:30	8.89	12.96
-16*16	60:40	10.31	14.44
-
-32*32	90:10	15.56	7.78
-32*32	80:20	13.33	9.44
-32*32	70:30	9.63	11.48
-32*32	60:40	10.03	10.00
-
-64*64	90:10	11.11	8.89
-64*64	80:20	7.78	7.78
-64*64	70:30	9.63	10.00
-64*64	60:40	10.31	9.44
-```
+![Training data vs Test F1 Score](https://drive.google.com/file/d/1G59Rrpyt7ld8xIKSatsVmdJza5-GVGwp/view?usp=sharing)
